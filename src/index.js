@@ -4,6 +4,7 @@ import App from './App.jsx'
 import { ToastProvider } from 'react-toast-notifications'
 import 'skeleton-css/css/normalize.css'
 import 'skeleton-css/css/skeleton.css'
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 ReactDOM.render(
   <React.StrictMode>    
@@ -13,3 +14,5 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 )
+
+serviceWorkerRegistration.register();
