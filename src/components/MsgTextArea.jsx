@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { sanitizeUrlText } from '../shared/utils.js'
+import { useToasts } from 'react-toast-notifications'
+import { copyToClipboard, sanitizeUrlText } from '../shared/utils.js'
 
 const Holder = styled.div`
   position: relative;
@@ -33,15 +34,26 @@ const Holder = styled.div`
 `;
 
 export default props => {
+  const { addToast } = useToasts();
+  
   const handleTextChange = event => {
     const text = event.target.value;
     props.setText(text);
     window.location.hash = encodeURI(text);
   };
 
+  const sendToClipboard = str => {
+    copyToClipboard(str);
+
+    addToast(`Message raw text copied to clipboard`, { 
+      autoDismiss: true,
+      appearance: 'success'
+    });
+  };
+
   return (
     <Holder className="message-textarea">
-      <span className="copy-to-clipboard" title="Copy raw message to clipboard">📋</span>
+      <span className="copy-to-clipboard" title="Copy raw message to clipboard" onClick={() => sendToClipboard(sanitizeUrlText(props.text))}>📋</span>
       <label htmlFor="text">Message Raw</label>
       <textarea name="text" value={sanitizeUrlText(props.text)} onChange={handleTextChange} style={{ resize: 'none' }}></textarea>
     </Holder>

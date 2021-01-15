@@ -4,6 +4,8 @@ import LazyLoad from 'react-lazyload';
 import styled from 'styled-components'
 import parseHtml from 'html-react-parser'
 import emojiListObj from '../shared/emoji-list.js'
+import { copyToClipboard } from '../shared/utils.js'
+import { useToasts } from 'react-toast-notifications'
 
 const Holder = styled.div`
   ul {
@@ -52,12 +54,23 @@ const Holder = styled.div`
 `;
 
 export default () => {
+  const { addToast } = useToasts();
+
+  const sendToClipboard = str => {
+    copyToClipboard(str);
+
+    addToast(`Emoji code copied: "${str}"`, { 
+      autoDismiss: true,
+      appearance: 'success'
+    });
+  };
+
   return (
     <Holder className="emoji-list">
       <label>Emoji List</label>
 
       <p className="text-muted">
-        <strong>Click</strong> on the emoji to copy its code to your clipboard
+        {emojiListObj.length} emojis available. <strong>Click</strong> on the emoji to copy its code to clipboard
       </p>
 
       <ul>
@@ -66,7 +79,7 @@ export default () => {
           
           return (
             <LazyLoad width={100} height={100} key={index}>
-              <li>
+              <li onClick={() => sendToClipboard(`:${item.shortname}:`)}>
                 <span className="item-img">{ parseHtml(emoji) }</span>
                 <span className="item-name">{ item.shortname }</span>
               </li>
