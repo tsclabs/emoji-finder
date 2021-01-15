@@ -1,5 +1,5 @@
 import EmojiOne from 'emojione'
 
-EmojiOne.imagePathPNG = '/emojis/';
+EmojiOne.imagePathPNG = 'emojis/';
 
 export default EmojiOne;
