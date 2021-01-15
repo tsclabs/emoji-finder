@@ -2,7 +2,7 @@
   "name": "emoji-finder",
   "version": "0.1.0",
   "private": true,
-  "home": "https://tsclabs.github.io/emoji-finder/",
+  "homepage": "https://tsclabs.github.io/emoji-finder/",
   "dependencies": {
     "emojione": "^4.5.0",
     "html-react-parser": "^1.1.2",
