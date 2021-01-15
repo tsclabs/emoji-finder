@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import EmojiEngine from '../shared/emoji-engine.js'
 import styled from 'styled-components'
-import parseHtml from 'html-react-parser'
+import lozad from 'lozad'
+import Spinner from './LoadingSpinner.jsx'; 
 import emojiListObj from '../shared/emoji-list.js'
 import { copyToClipboard } from '../shared/utils.js'
 import { useToasts } from 'react-toast-notifications'
@@ -64,6 +65,14 @@ export default () => {
     });
   };
 
+  useEffect(() => {
+    lozad('.emoji-lazy', {
+      load: el => {
+        el.innerHTML = el.dataset.content;
+      }
+    }).observe();     
+  });
+
   return (
     <Holder className="emoji-list">
       <label>Emoji List</label>
@@ -78,7 +87,10 @@ export default () => {
           
           return (
             <li onClick={() => sendToClipboard(`:${item.shortname}:`)} key={index}>
-              <span className="item-img">{ parseHtml(emoji) }</span>
+              <span className="item-img emoji-lazy" data-content={emoji}>
+                <Spinner/>
+              </span>
+
               <span className="item-name">{ item.shortname }</span>
             </li>
           );
