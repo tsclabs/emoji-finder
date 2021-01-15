@@ -1,6 +1,5 @@
 import React from 'react'
 import EmojiEngine from '../shared/emoji-engine.js'
-import LazyLoad from 'react-lazyload';
 import styled from 'styled-components'
 import parseHtml from 'html-react-parser'
 import emojiListObj from '../shared/emoji-list.js'
@@ -78,12 +77,10 @@ export default () => {
           const emoji = EmojiEngine.shortnameToImage(`:${item.shortname}:`);
           
           return (
-            <LazyLoad width={100} height={100} key={index}>
-              <li onClick={() => sendToClipboard(`:${item.shortname}:`)}>
-                <span className="item-img">{ parseHtml(emoji) }</span>
-                <span className="item-name">{ item.shortname }</span>
-              </li>
-            </LazyLoad>
+            <li onClick={() => sendToClipboard(`:${item.shortname}:`)} key={index}>
+              <span className="item-img">{ parseHtml(emoji) }</span>
+              <span className="item-name">{ item.shortname }</span>
+            </li>
           );
         })}
       </ul>
