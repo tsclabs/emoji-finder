@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import EmojiEngine from '../shared/emoji-engine.js'
 import styled from 'styled-components'
 import lozad from 'lozad'
-import Spinner from './LoadingSpinner.jsx'; 
 import emojiListObj from '../shared/emoji-list.js'
 import { copyToClipboard } from '../shared/utils.js'
 import { useToasts } from 'react-toast-notifications'
@@ -39,6 +38,14 @@ const Holder = styled.div`
           word-break: break-all;
           padding: 2px 0;
         }
+
+        &.item-img:empty {
+          width: 30px;
+          height: 30px;
+          margin: 0 auto;
+          border-radius: 100%;
+          background-color: #eeeeee;
+        }
       }
 
       &:hover {
@@ -66,11 +73,11 @@ export default () => {
   };
 
   useEffect(() => {
-    lozad('.emoji-lazy', {
+    !window.LOZ && (window.LOZ = lozad('.emoji-lazy', {
       load: el => {
         el.innerHTML = el.dataset.content;
       }
-    }).observe();     
+    }).observe());
   });
 
   return (
@@ -87,9 +94,7 @@ export default () => {
           
           return (
             <li onClick={() => sendToClipboard(`:${item.shortname}:`)} key={index}>
-              <span className="item-img emoji-lazy" data-content={emoji}>
-                <Spinner/>
-              </span>
+              <span className="item-img emoji-lazy" data-content={emoji}></span>
 
               <span className="item-name">{ item.shortname }</span>
             </li>
