@@ -4,7 +4,7 @@ import MsgTextArea from './MsgTextArea.jsx'
 import TextEmojify from './MsgTextEmojify.jsx'
 
 export default function App() {
-  const [ text, setText ] = useState(window.location.hash.replace('#/', '') || '');
+  const [ text, setText ] = useState(window.location.hash.replace('#/', '') || 'Hello World :smile:');
 
   return (
     <div className="message-composer" style={{ paddingBottom: 28 }}>

@@ -15,7 +15,7 @@ const AppNav = styled.div`
 export default () => {
     return (
         <AppNav>
-            <span>Emoji<strong>Finder</strong></span>
+            <span style={{ color: '#6a0dad' }}>Emoji<strong>Finder</strong></span>
         </AppNav>
     )
 }

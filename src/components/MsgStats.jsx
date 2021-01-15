@@ -4,8 +4,9 @@ import styled from 'styled-components'
 const Holder = styled.div`
     display: flex;
     width: 100%;
-    padding: 8px;
+    padding: 8px 0;
     text-align: right;
+    box-sizing: border-box;
 
     p {
         margin: 0;

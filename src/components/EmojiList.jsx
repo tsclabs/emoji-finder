@@ -1,5 +1,6 @@
 import React from 'react'
-import EmojiOne from 'emojione'
+import EmojiEngine from '../shared/emoji-engine.js'
+import LazyLoad from 'react-lazyload';
 import styled from 'styled-components'
 import parseHtml from 'html-react-parser'
 import emojiListObj from '../shared/emoji-list.js'
@@ -13,13 +14,31 @@ const Holder = styled.div`
 
     li {
       margin: 6px;
+      width: 100px;
       padding: 4px;
       cursor: pointer;
       transition: 100ms;
       border-radius: 4px;
+      text-align: center;
+      
       img {
         display: block;
       }
+
+      span {
+        display: block;
+        width: 100%;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        &.item-name {
+          word-break: break-all;
+          padding: 2px 0;
+        }
+      }
+
       &:hover {
         background-color: #eeeeee;
       }
@@ -38,15 +57,21 @@ export default () => {
       <label>Emoji List</label>
 
       <p className="text-muted">
-        <strong>Click</strong> on the emoji to add to copy its code to the clipboard
+        <strong>Click</strong> on the emoji to copy its code to your clipboard
       </p>
 
       <ul>
         {emojiListObj.map((item, index) => {
-          const emoji = EmojiOne.shortnameToImage(`:${item.shortname}:`);
-          const emojiExists = emoji !== `:${item.shortname}:`; 
-
-          return emojiExists ? <li key={index}>{ parseHtml(emoji) }</li> : false;
+          const emoji = EmojiEngine.shortnameToImage(`:${item.shortname}:`);
+          
+          return (
+            <LazyLoad width={100} height={100} key={index}>
+              <li>
+                <span className="item-img">{ parseHtml(emoji) }</span>
+                <span className="item-name">{ item.shortname }</span>
+              </li>
+            </LazyLoad>
+          );
         })}
       </ul>
     </Holder>    

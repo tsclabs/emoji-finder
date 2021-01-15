@@ -8,7 +8,7 @@ export default function App() {
     <React.Fragment>
       <AppNav/>
 
-      <div className="container" style={{ paddingTop: 100 }}>
+      <div className="container" style={{ paddingTop: 80 }}>
         <MessageComposer />
 
         <EmojiList />
@@ -16,7 +16,7 @@ export default function App() {
 
       <footer>
         <p style={{ textAlign: 'center', width: '100%' }}>
-          Emoji<strong>Finder</strong> made with ❤️ by TSC Develompent Team
+          Emoji<strong>Finder</strong> made with ❤️ by TSC Development Team
         </p>
       </footer>
     </React.Fragment>
