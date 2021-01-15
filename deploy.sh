@@ -1,5 +1,5 @@
 git checkout gh-pages
-git reset --hard origin/master
+git reset --hard origin/main
 
 npm install
 npm run build
@@ -12,4 +12,4 @@ git add .
 git commit -m "deploy"
 
 git push origin gh-pages --force
-git checkout master
+git checkout main
