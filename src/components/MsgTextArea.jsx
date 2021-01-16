@@ -10,15 +10,17 @@ const Holder = styled.div`
     z-index: 50;
     width: 100%;
     min-height: 100px;
+    resize: both;
+    overflow: auto;
+    max-width: 100%;
+    max-height: 300px;
   }
 
-  .copy-to-clipboard {
-    position: absolute;
-    right: -16px;
-    top: 10px;
-    width: 28px;
-    height: 28px;
-    display: flex;
+  .chip-round {
+    width: 20px;
+    height: 20px;
+    margin-left: 8px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     background-color: #dddddd;
@@ -30,6 +32,13 @@ const Holder = styled.div`
       transition: 100ms;
       transform: scale(1.2); 
     }    
+  }
+
+  .header {
+    display: flex;
+    margin-bottom: 4px;
+    align-items: center;
+    justify-content: space-between;
   }
 `;
 
@@ -51,11 +60,27 @@ export default props => {
     });
   };
 
+  const clearText = () => {
+    props.setText('');
+    window.location.hash = '';
+  };
+
   return (
     <Holder className="message-textarea">
-      <span className="copy-to-clipboard" title="Copy raw message to clipboard" onClick={() => sendToClipboard(sanitizeUrlText(props.text))}>📋</span>
-      <label htmlFor="text">Message Raw</label>
-      <textarea name="text" value={sanitizeUrlText(props.text)} onChange={handleTextChange} style={{ resize: 'none' }}></textarea>
+      <div class="header">
+        <div class="left">
+          <label htmlFor="text">
+            Message Raw
+          </label>
+        </div>
+
+        <div className="right">
+          <span className="chip-round" title="Copy raw message to clipboard" onClick={() => sendToClipboard(sanitizeUrlText(props.text))}>📋</span>
+          <span className="chip-round" title="Clear current message" onClick={() => clearText()}>✖</span>
+        </div>
+      </div>
+
+      <textarea name="text" value={sanitizeUrlText(props.text)} onChange={handleTextChange}></textarea>
     </Holder>
   )
 }
