@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import EmojiEngine from '../shared/emoji-engine.js'
 import styled from 'styled-components'
 import lozad from 'lozad'
 import emojiListObj from '../shared/emoji-list.js'
 import { copyToClipboard } from '../shared/utils.js'
 import { useToasts } from 'react-toast-notifications'
+import SearchBar from './SearchBar.jsx'
 
 const Holder = styled.div`
   ul {
@@ -62,6 +63,7 @@ const Holder = styled.div`
 
 export default () => {
   const { addToast } = useToasts();
+  const [ emojis, setEmojis ] = useState(emojiListObj);
 
   const sendToClipboard = str => {
     copyToClipboard(str);
@@ -74,9 +76,7 @@ export default () => {
 
   useEffect(() => {
     !window.LOZ && (window.LOZ = lozad('.emoji-lazy', {
-      load: el => {
-        el.innerHTML = el.dataset.content;
-      }
+      load: el => el.innerHTML = el.dataset.content
     }).observe());
   });
 
@@ -84,16 +84,18 @@ export default () => {
     <Holder className="emoji-list">
       <label>Emoji List</label>
 
+      <SearchBar/>
+      
       <p className="text-muted">
         {emojiListObj.length} emojis available. <strong>Click</strong> on the emoji to copy its code to clipboard
       </p>
 
-      <ul>
-        {emojiListObj.map((item, index) => {
+      <ul id="emoji-list">
+        {emojis.map((item, index) => {
           const emoji = EmojiEngine.shortnameToImage(`:${item.shortname}:`);
           
           return (
-            <li onClick={() => sendToClipboard(`:${item.shortname}:`)} key={index}>
+            <li onClick={() => sendToClipboard(`:${item.shortname}:`)} data-keywords={`${item.shortname} ${item.keywords}`} key={index}>
               <span className="item-img emoji-lazy" data-content={emoji}></span>
 
               <span className="item-name">{ item.shortname }</span>
