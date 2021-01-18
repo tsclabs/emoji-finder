@@ -67,8 +67,8 @@ export default props => {
 
   return (
     <Holder className="message-textarea">
-      <div class="header">
-        <div class="left">
+      <div className="header">
+        <div className="left">
           <label htmlFor="text">
             Message Raw
           </label>
