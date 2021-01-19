@@ -12,7 +12,8 @@ const AppNav = styled.div`
   background-color: #ffffff;
 
   > div .beta-badge {
-    color: #000000;
+    color: #ffffff;
+    line-height: 1;
     font-size: 12px;
     padding: 4px 8px;
     border-radius: 25px;

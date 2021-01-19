@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import BtnDropdown from './BtnDropdown.jsx'
 import { useToasts } from 'react-toast-notifications'
 import { copyToClipboard, sanitizeUrlText } from '../shared/utils.js'
 
@@ -23,14 +24,15 @@ const Holder = styled.div`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: #dddddd;
+    border: solid 2px #888;
     border-radius: 100%;
     padding: 2px;
     cursor: pointer;
     transition: 100ms;
     &:hover {
       transition: 100ms;
-      transform: scale(1.2); 
+      transform: translateY(-3px);
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
     }    
   }
 
@@ -39,6 +41,10 @@ const Holder = styled.div`
     margin-bottom: 4px;
     align-items: center;
     justify-content: space-between;
+
+    .right {
+      display: flex;
+    }
   }
 `;
 
@@ -75,8 +81,16 @@ export default props => {
         </div>
 
         <div className="right">
-          <span className="chip-round" title="Copy raw message to clipboard" onClick={() => sendToClipboard(sanitizeUrlText(props.text))}>📋</span>
-          <span className="chip-round" title="Clear current message" onClick={() => clearText()}>✖</span>
+          <BtnDropdown btnClass="chip-round" btnContent={<span>⚡</span>}>
+            <ul>
+              <li onClick={() => console.log('Italic')}><i>Italic</i></li>
+              <li onClick={() => console.log('Bold')}><strong>Bold</strong></li>
+              <li onClick={() => console.log('Stroked')}><s>Stroked</s></li>
+            </ul>
+          </BtnDropdown>
+          
+          <div className="chip-round" title="Copy raw message to clipboard" onClick={() => sendToClipboard(sanitizeUrlText(props.text))}>📋</div>
+          <div className="chip-round" title="Clear current message" onClick={() => clearText()}>✖</div>
         </div>
       </div>
 

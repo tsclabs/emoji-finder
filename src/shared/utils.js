@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 export function sanitizeUrlText (text) {
   return decodeURIComponent(text.startsWith('#') ? text.substr(1, text.length) : text);
 };
@@ -35,3 +37,16 @@ export function copyToClipboard (str) {
 
   return copyTextToClipboard(str);
 }
+
+export function onClickOutside(ref, cb) {
+  useEffect(() => {
+    const handleClickOutside = e => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        cb(e);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [ ref ]);
+}  
