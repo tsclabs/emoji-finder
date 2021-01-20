@@ -108,7 +108,7 @@ export default props => {
             <ul>
               <li onClick={() => selWrap('<i>', '</i>')}><i>Italic</i></li>
               <li onClick={() => selWrap('<strong>', '</strong>')}><strong>Bold</strong></li>
-              <li onClick={() => selWrap('<s>', '</s>')}><s>Stroked</s></li>
+              <li onClick={() => selWrap('<s>', '</s>')}><s>Strike</s></li>
             </ul>
           </BtnDropdown>
           
