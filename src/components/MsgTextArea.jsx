@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import BtnDropdown from './BtnDropdown.jsx'
 import { useToasts } from 'react-toast-notifications'
-import { copyToClipboard, sanitizeUrlText } from '../shared/utils.js'
+import { copyToClipboard, sanitizeUrlText, wrapSelectedText } from '../shared/utils.js'
 
 const Holder = styled.div`
   position: relative;
@@ -50,11 +50,21 @@ const Holder = styled.div`
 
 export default props => {
   const { addToast } = useToasts();
-  
-  const handleTextChange = event => {
-    const text = event.target.value;
+  const textareaRef = useRef(null);
+  const cursorPos = {};
+
+  !window.CPOS && (window.CPOS = document.addEventListener('mousemove', e => {
+    cursorPos.x = e.clientX;
+    cursorPos.y = e.clientY;
+  }));
+
+  const updateText = text => {    
     props.setText(text);
     window.location.hash = encodeURI(text);
+  }
+  
+  const onTextChange = e => {
+    updateText(e.target.value);
   };
 
   const sendToClipboard = str => {
@@ -66,9 +76,19 @@ export default props => {
     });
   };
 
-  const clearText = () => {
-    props.setText('');
-    window.location.hash = '';
+  const selWrap = (prefix, posfix) => {
+    wrapSelectedText(textareaRef.current, prefix, posfix);
+    updateText(textareaRef.current.value);
+  };
+
+  const keepSelection = e => {
+    const hoverEl = document.elementFromPoint(cursorPos.x, cursorPos.y);
+
+    if (hoverEl.classList.contains('keep-textarea-selection')) {
+      e.target.focus(); 
+      
+      return false
+    }
   };
 
   return (
@@ -81,20 +101,26 @@ export default props => {
         </div>
 
         <div className="right">
-          <BtnDropdown btnClass="chip-round" btnContent={<span>⚡</span>}>
+          <BtnDropdown btnClass="chip-round" btnContent={<span className="keep-textarea-selection">⚡</span>}>
             <ul>
-              <li onClick={() => console.log('Italic')}><i>Italic</i></li>
-              <li onClick={() => console.log('Bold')}><strong>Bold</strong></li>
-              <li onClick={() => console.log('Stroked')}><s>Stroked</s></li>
+              <li onClick={() => selWrap('<i>', '</i>')}><i>Italic</i></li>
+              <li onClick={() => selWrap('<strong>', '</strong>')}><strong>Bold</strong></li>
+              <li onClick={() => selWrap('<s>', '</s>')}><s>Stroked</s></li>
             </ul>
           </BtnDropdown>
           
           <div className="chip-round" title="Copy raw message to clipboard" onClick={() => sendToClipboard(sanitizeUrlText(props.text))}>📋</div>
-          <div className="chip-round" title="Clear current message" onClick={() => clearText()}>✖</div>
+          <div className="chip-round" title="Clear current message" onClick={() => updateText('')}>✖</div>
         </div>
       </div>
 
-      <textarea name="text" value={sanitizeUrlText(props.text)} onChange={handleTextChange}></textarea>
+      <textarea 
+        name="text"
+        ref={textareaRef} 
+        value={sanitizeUrlText(props.text)} 
+        onChange={onTextChange}
+        onBlur={keepSelection}
+      ></textarea>
     </Holder>
   )
 }

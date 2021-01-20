@@ -12,20 +12,20 @@ export function copyToClipboard (str) {
     textArea.style.top = "0";
     textArea.style.left = "0";
     textArea.style.position = "fixed";
-  
+    
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-  
+    
     try {
       document.execCommand('copy');
     } catch (err) {
       console.error('Fallback: Oops, unable to copy', err);
     }
-  
+    
     document.body.removeChild(textArea);
   }
-
+  
   function copyTextToClipboard(text) {
     if (!navigator.clipboard) {
       fallbackCopyTextToClipboard(text);
@@ -34,7 +34,7 @@ export function copyToClipboard (str) {
     
     navigator.clipboard.writeText(text);
   }
-
+  
   return copyTextToClipboard(str);
 }
 
@@ -45,8 +45,18 @@ export function onClickOutside(ref, cb) {
         cb(e);
       }
     }
-
+    
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [ ref ]);
-}  
+}
+
+export function wrapSelectedText(textarea, prefix, posfix) {
+    let start = textarea.selectionStart;
+    let finish = textarea.selectionEnd;
+    let allText = textarea.value;
+    let sel = allText.substring(start, finish);
+    let newText=allText.substring(0, start)+prefix+sel+posfix+allText.substring(finish, allText.length);
+
+    textarea.value=newText;
+}
