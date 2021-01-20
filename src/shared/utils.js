@@ -52,11 +52,14 @@ export function onClickOutside(ref, cb) {
 }
 
 export function wrapSelectedText(textarea, prefix, posfix) {
-    let start = textarea.selectionStart;
-    let finish = textarea.selectionEnd;
-    let allText = textarea.value;
-    let sel = allText.substring(start, finish);
+  let start = textarea.selectionStart;
+  let finish = textarea.selectionEnd;
+  let allText = textarea.value;
+  let sel = allText.substring(start, finish);
+
+  if (sel.trim()) {
     let newText=allText.substring(0, start)+prefix+sel+posfix+allText.substring(finish, allText.length);
 
     textarea.value=newText;
+  }
 }
