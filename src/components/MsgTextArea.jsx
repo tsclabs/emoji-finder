@@ -82,9 +82,12 @@ export default props => {
   };
 
   const keepSelection = e => {
-    const hoverEl = document.elementFromPoint(cursorPos.x, cursorPos.y);
+    if (!cursorPos.x || !cursorPos.y) return;
 
-    if (hoverEl.classList.contains('keep-textarea-selection')) {
+    const hoverEl = document.elementFromPoint(cursorPos.x, cursorPos.y);
+    const mustKeepSelection = hoverEl.classList.contains('keep-textarea-selection');
+
+    if (mustKeepSelection) {
       e.target.focus(); 
       
       return false
